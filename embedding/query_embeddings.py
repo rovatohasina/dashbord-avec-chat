@@ -87,7 +87,6 @@ def query_pinecone(question: str,
         {"$or": filtres} 
     ]
 }
-    print(pinecone_filter)
     # Étape 1 – Requête vers les données WBData (valeur)
     wbdata_results = index.query(
         vector=question_embedding,
@@ -101,7 +100,8 @@ def query_pinecone(question: str,
         vector=question_embedding,
         top_k=top_k,
         include_metadata=True,
-        include_values=False
+        include_values=False,
+        filter={"source": {"$eq": "pdf"}}
     )
             # === Étape 1 : Résultats WBData ===
     wbdata_contexts = []

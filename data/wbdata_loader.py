@@ -11,8 +11,6 @@ import plotly.express as px
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode
 from PIL import Image
 
-st.set_page_config(page_title="Prévision du PIB", layout="wide", initial_sidebar_state="expanded")
-
 def get_live_wbdata():
     indicators = {
             "NY.GDP.MKTP.KD": "PIB",
