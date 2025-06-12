@@ -203,7 +203,7 @@ def get_live_wbdata():
             sign = "↓"
         else:
             text_color = "orange"
-            sign = "→"
+            sign = ""
     
         st.markdown(
             f"""
