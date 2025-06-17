@@ -11,7 +11,6 @@ from data.wbdata_loader import get_live_wbdata
 # Charger les variables d'environnement
 load_dotenv()
 
-st.set_page_config(page_title="Prévision du PIB", layout="wide", initial_sidebar_state="expanded")
 
 def create_prompt(question, wbdata_context, pdf_context):
     """
