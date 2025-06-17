@@ -112,6 +112,8 @@ def main():
             }
         </style>
     """, unsafe_allow_html=True)
+st.set_page_config(page_title="Prévision du PIB", layout="wide", initial_sidebar_state="expanded")
+
 # Initialisation de l'historique
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
