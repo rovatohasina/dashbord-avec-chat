@@ -8,10 +8,10 @@ from datetime import datetime
 from embedding.query_embeddings import query_pinecone
 from data.wbdata_loader import get_live_wbdata
 
+st.set_page_config(page_title="Prévision du PIB", layout="wide", initial_sidebar_state="expanded")
 # Charger les variables d'environnement
 load_dotenv()
 
-st.set_page_config(page_title="Prévision du PIB", layout="wide", initial_sidebar_state="expanded")
 
 def create_prompt(question, wbdata_context, pdf_context):
     """
@@ -38,6 +38,7 @@ Tu es un assistant économique intelligent. Réponds à la question suivante ave
 **Question :** {question}
 
 **Instructions :**
+- Si la question est juste une salutation (ex : bonjour, salut, hello), réponds uniquement par une salutation naturelle suivie d'une proposition d'aide,sans aucune donnée économique.
 - Sinon,Réponds uniquement à **l'indicateur économique demandé** dans la question.
 - Ne mentionne **aucun autre indicateur**, même si des données sont disponibles.
 - Ne parle que de l’année explicitement demandée. Ignore les autres années.
