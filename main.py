@@ -11,6 +11,7 @@ from data.wbdata_loader import get_live_wbdata
 # Charger les variables d'environnement
 load_dotenv()
 
+st.set_page_config(page_title="Prévision du PIB", layout="wide", initial_sidebar_state="expanded")
 
 def create_prompt(question, wbdata_context, pdf_context):
     """
@@ -112,7 +113,6 @@ def main():
             }
         </style>
     """, unsafe_allow_html=True)
-st.set_page_config(page_title="Prévision du PIB", layout="wide", initial_sidebar_state="expanded")
 
 # Initialisation de l'historique
 if "chat_history" not in st.session_state:
@@ -148,71 +148,4 @@ else:
 if __name__ == "__main__":
     main()
 
-# def main():
-#     st.markdown("""
-#         <style>
-#         #chat-toggle-btn {
-#             position: fixed;
-#             bottom: 20px;   /* distance du bas */
-#             right: 20px;    /* distance de la droite */
-#             z-index: 9999;  /* pour qu’il soit au-dessus */
-#             background-color: #007bff;
-#             color: white;
-#             border: none;
-#             padding: 12px 16px;
-#             border-radius: 50%;
-#             font-size: 24px;
-#             cursor: pointer;
-#             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-#         }
-#             #chat-toggle-btn:hover {
-#             background-color: #0056b3;
-#         }
-#         </style>
-#         <button id="chat-toggle-btn">💬</button>
-#         <script>
-#         const btn = window.parent.document.getElementById('chat-toggle-btn');
-#         const chatWindow = window.parent.document.getElementById('chat-window');
-
-#         btn.onclick = () => {
-#             if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
-#                 chatWindow.style.display = 'block';
-#             } else {
-#                 chatWindow.style.display = 'none';
-#             }
-#         }
-#         </script>
-#     """, unsafe_allow_html=True)
-
-# df_pivot,filtered_data,forecast_df_PIB, filtered_df_depenses, filtered_df_recettes, filtered_ventillation,df_sunburst,selected_Années,selected_Année_ventillation,selected_Année,selected_Année_depenses,selected_Année_recettes = get_live_wbdata()
-# if "chat_history" not in st.session_state:
-#     st.session_state.chat_history = []
-# if "chat_visible" not in st.session_state:
-#     st.session_state.chat_visible = False
-# toggle_btn = st.button("💬", key="toggle_chat_btn")
-# if toggle_btn:
-#     st.session_state.chat_visible = not st.session_state.chat_visible
-# chat_container = st.empty()
-# if st.session_state.chat_visible:
-#     with chat_container.container():
-#         with st.form("chat_form", clear_on_submit=True):
-#             user_question = st.text_input("Votre question :", key="user_input")
-#             submitted = st.form_submit_button("Envoyer")
-#             if submitted and user_question.strip():
-#                 with st.spinner("Analyse en cours..."):
-#                     wbdata_context, pdf_context = query_pinecone(user_question, selected_Années, selected_Année_ventillation, selected_Année, selected_Année_depenses, selected_Année_recettes)
-#                     prompt = create_prompt(user_question, wbdata_context, pdf_context)
-#                     try:
-#                         response = ask_gemini(prompt)
-#                         response_text = response.content
-#                     except Exception as e:
-#                         response_text = f"Erreur : {e}"
-#                 st.session_state.chat_history.append(("Vous", user_question))
-#                 st.session_state.chat_history.append(("Chat_economique", response_text))
-#                 save_conversation(user_question, response)
-#     for sender, msg in st.session_state.chat_history:
-#         bubble_class = "chat-bubble-user" if sender == "Vous" else "chat-bubble-bot"
-#         st.markdown(f'<div class="{bubble_class}"><b>{sender} :</b><br>{msg}</div>', unsafe_allow_html=True)
-# if __name__ == "__main__":
-#     main()
 

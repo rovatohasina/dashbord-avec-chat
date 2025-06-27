@@ -80,7 +80,6 @@ def query_pinecone(question: str,
         })
         total_annees += 1
     top_k = total_annees if total_annees > 0 else 20
-    # pinecone_filter = {"$or": filtres}
     pinecone_filter = {
     "$and": [
         {"source": "wbdata"},
@@ -103,22 +102,17 @@ def query_pinecone(question: str,
         include_values=False,
         filter={"source": {"$eq": "pdf"}}
     )
-            # === Étape 1 : Résultats WBData ===
+            # Résultats WBData 
     wbdata_contexts = []
     if wbdata_results and wbdata_results.get("matches"):
-        print(f"Recherche WBData OK - Nombre de résultats : {len(wbdata_results['matches'])}")
         for match in wbdata_results.get("matches", []):
             texte = match.get("metadata", {}).get("text", "").strip()
-        if texte:
-            wbdata_contexts.append(f"WBData : {texte}")
+            if texte:
+                wbdata_contexts.append(f"WBData : {texte}")
     else:
         print("Recherche WBData NON OK - Aucun résultat trouvé.")
 
-# Si aucune donnée WBData trouvée, on retourne tout de suite
-    if not wbdata_contexts:
-        return "Aucune valeur WBData trouvée pour les critères sélectionnés."
-    print(wbdata_results)
-# === Étape 2 : Résultats PDF ===
+            # Résultats PDF 
     pdf_contexts = []
     if pdf_results and pdf_results.get("matches"):
         for match in pdf_results.get("matches", []):
@@ -127,8 +121,8 @@ def query_pinecone(question: str,
                 pdf_contexts.append(f"PDF: {texte}")
     else:
         pdf_contexts.append("Aucun contexte explicatif PDF trouvé.")
-
-# === Fusion et retour final ===
+        
+            # Fusion
     wbdata_context = ("\n".join(wbdata_contexts))
     pdf_context = ("\n".join(pdf_contexts))
 
