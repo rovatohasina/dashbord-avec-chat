@@ -216,7 +216,6 @@ def get_live_wbdata():
         )
 
 # Liste des indicateurs à afficher
-    # Liste des titres personnalisés à afficher avec leur indicateur source dans df_indicateurs
     titres_personnalises = {
         "PIB": "PIB de Madagascar",
         "PIB par habitant": "PIB par habitant",
@@ -234,8 +233,6 @@ def get_live_wbdata():
             indicateurs_pourcentages.append((titre_affiche, pourcentage))
         except Exception as e:
             st.warning(f"Indicateur manquant ou invalide : {indicateur} ({e})")
-
-# Colonnes dynamiques
     cols = st.columns(len(indicateurs_pourcentages))
 
 # Affichage
@@ -278,7 +275,6 @@ def get_live_wbdata():
             st.pyplot(fig2)
 
         with col2:
-            # plt.plot(filtered_data['Année'], filtered_data['PIB'])
             fig, ax = plt.subplots(figsize=(10, 4.8), facecolor="#2368B3")
             ax.plot(forecast_df['Année'], forecast_df['Prévision PIB'], linestyle='-', color='#063970')
             ax.set_title('Évolution du PIB de Madagascar et sa prévision de 10 ans', color="#ffffff")
@@ -294,7 +290,7 @@ def get_live_wbdata():
     st.subheader("Analyse de quelques indicateurs économiques")
     with col1:
         st.write("Tableau d'évolution des indicateurs")
-# Configuration de la grille
+# Configuration du tableau
         blue_text_style = JsCode("""
     function(params) {
         return {
@@ -380,7 +376,7 @@ def get_live_wbdata():
             ax.tick_params(axis='x', colors='#ffffff')
             ax.tick_params(axis='y', colors='#ffffff')
             st.pyplot(fig)
-#Ventilation
+
     st.write("")
     st.write("")
     st.subheader("Evolution des Dépenses Publiques")
@@ -407,13 +403,13 @@ def get_live_wbdata():
             id_vars=["Année"], var_name="Secteur", value_name="Montant"
         )
         df_wide = df_sunburst.pivot(index="Année", columns="Secteur", values="Montant").reset_index()
-# Ajouter une colonne de catégorie (racine du sunburst)
+# Ajouter une colonne de catégorie 
         df_sunburst["Catégorie"] = "Dépenses Publiques"
 
 # Trier les secteurs par montant décroissant
         df_sunburst = df_sunburst.sort_values(by="Montant", ascending=False)
 
-# Créer le graphique sunburst
+# Création du graphique sunburst
         fig_sunburst = px.sunburst(
             df_sunburst,
             path=["Catégorie", "Secteur"],
@@ -427,13 +423,12 @@ def get_live_wbdata():
             hovertemplate='<b>%{label}</b><br>Montant : %{value:.2f} unités<extra></extra>'
         )
 
-# Afficher le graphique dans Streamlit
+# Afficher le graphique 
         st.plotly_chart(fig_sunburst, use_container_width=True)
 
-# Analyse textuelle automatique
+# Analyse textuelle 
         top_depense = df_sunburst
         if not df_sunburst.empty:
-    # S'assurer qu'il y a bien des données valides pour Montant
             if df_sunburst['Montant'].notnull().any():
                 top_depense = df_sunburst.loc[df_sunburst['Montant'].idxmax()]
                 st.markdown(f"En **{selected_Année}**, la plus grande dépense publique a concerné le secteur **{top_depense['Secteur']}**, avec un montant de **{top_depense['Montant']}**.")

@@ -2,21 +2,18 @@ from pinecone import Index
 from rag.pinecone import init_pinecone
 from embedding.doc_embeddings import embed_pdfs_and_wbdata_and_check, get_pdf_documents, get_wbdata_documents
 import pandas as pd
+
 def insert_vectors():
-    # Charger les documents PDF
+    # Charger les donnees
     pdf_docs = get_pdf_documents("data/doc")
-    
-    # Charger WBData
     wbdata_docs = get_wbdata_documents()
     df_wbdata = pd.DataFrame(wbdata_docs)
     
-    # Calculer embeddings
     vectors = embed_pdfs_and_wbdata_and_check(df_wbdata, pdf_docs)
-    
     pc, index = init_pinecone()
     inserted_ids = []
     
-    # Insérer WBData avec année
+    # Insérer WBData avec annee
     for i in range(len(df_wbdata)):
         text, embedding, source = vectors[i]
         vector_id = f"{source}-{i}"

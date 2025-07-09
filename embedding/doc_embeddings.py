@@ -5,6 +5,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from data.wbdata_loader import get_live_wbdata
 import pandas as pd
+
 # Charger les variables d'environnement
 load_dotenv()
 
@@ -33,7 +34,7 @@ def get_wbdata_documents():
     for nom_df, df in dfs:
         df['type'] = nom_df.lower()
 
-    # Concatène tous les DataFrames en un seul
+    # Concatenation des DataFrames 
     df_wbdata = pd.concat([df for _, df in dfs], ignore_index=True)
     wbdata_docs = []
 
@@ -43,12 +44,8 @@ def get_wbdata_documents():
                 année = int(row['Année']) if 'Année' in row else "Inconnue"
             except:
                 année = "Inconnue"
-
-            # parts = [f"[{nom_df}] En {année} :"]
-            doc_type = row['type']  # récupère le type ici
-
+            doc_type = row['type'] 
             parts = [f"[{nom_df}] En {année} :"]
-
             for col in df.columns:
                 if col != 'Année' and pd.notnull(row[col]):
                     try:
@@ -64,7 +61,6 @@ def get_wbdata_documents():
                  "text": text}
                 )
     return wbdata_docs
-
 
 # Embedding des documents
 def embed_pdfs_and_wbdata_and_check(df, pdf_documents):
@@ -82,13 +78,11 @@ def embed_pdfs_and_wbdata_and_check(df, pdf_documents):
     pdf_embeddings = embed_model.embed_documents(pdf_texts)
     pdf_vectors = [(text, vec, "pdf") for text, vec in zip(pdf_texts, pdf_embeddings)]
 
-    # 5. Affichage pour vérification
+    # vérification
     for i, emb in enumerate(pdf_embeddings[:3]):
         print(f"PDF Embedding {i} : {len(emb)} dimensions")
 
     for i, emb in enumerate(wbdata_embeddings[:3]):
         print(f"WBData Embedding {i} : {len(emb)} dimensions")
-
-    # Combiner les deux
     return wb_vectors + pdf_vectors
 

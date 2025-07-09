@@ -9,7 +9,7 @@ from embedding.query_embeddings import query_pinecone
 from data.wbdata_loader import get_live_wbdata
 
 st.set_page_config(page_title="Prévision du PIB", layout="wide", initial_sidebar_state="expanded")
-# Charger les variables d'environnement
+
 load_dotenv()
 
 
@@ -119,7 +119,7 @@ def main():
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# Formulaire de saisie dans la sidebar
+# Formulaire de saisie 
 df_pivot,filtered_data,forecast_df_PIB, filtered_df_depenses, filtered_df_recettes, filtered_ventillation,df_sunburst,selected_Années,selected_Année_ventillation,selected_Année,selected_Année_depenses,selected_Année_recettes=get_live_wbdata()
 with st.sidebar.form("chat_form"):
     user_question = st.text_input("Votre question :", key="user_input")
@@ -134,10 +134,10 @@ if submitted and (user_question or selected_Années or selected_Année_ventillat
             response_text = response.content
         except Exception as e:
             response_text = f"Erreur : {e}"
-    # Ajouter à l'historique
+    # Ajout des historiques de discussion
     st.session_state.chat_history.append(("Vous", user_question))
     st.session_state.chat_history.append(("Chat_economique", response_text))
-    # Sauvegarde
+    # Sauvegarde de la conversation
     save_conversation(user_question, response)
     st.session_state.submit = False
 if "chat_history" in st.session_state and st.session_state.chat_history:

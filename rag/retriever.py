@@ -18,19 +18,15 @@ def create_retriever():
     documents = get_pdf_documents("data/doc")
     df = get_live_wbdata()
 
-    # Fournir les données à embed_pdfs 
     pdf_vectors, wbdata_vectors = embed_pdfs_and_wbdata_and_check(df, documents)
 
-    # Diviser les documents PDF en chunks
+    # Diviser les documents en chunks
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     splitted_docs = splitter.split_documents(documents)
     
-    # Initialiser le modèle d'Embedding HuggingFace
+    # Initialisation du modèle d'Embed HuggingFace
     embed_model = HuggingFaceEmbeddings(model_name="sentence-transformers/multilingual-Mini-LM-L12-v2")
-    
-    # Créer un Pinecone VectorStore pour les documents PDF
     pdf_vector_store = LangchainPinecone.from_documents(splitted_docs, embed_model, index_name=index_name)
-
     retriever = pdf_vector_store.as_retriever()
     return retriever
 

@@ -31,7 +31,7 @@ def query_pinecone(question: str,
 
     filtres = []
     total_annees = 0
-    # Données actuelles
+
     if selected_Années:
         filtres.append({
             "$and": [
@@ -41,7 +41,6 @@ def query_pinecone(question: str,
         })
         total_annees += selected_Années[1] - selected_Années[0] + 1
 
-    # Données ventilation
     if selected_Année_ventillation:
         filtres.append({
             "$and": [
@@ -50,7 +49,7 @@ def query_pinecone(question: str,
             ]
         })
         total_annees += selected_Année_ventillation[1] - selected_Année_ventillation[0] + 1
-    # 3. Données ventilation (année unique)
+
     if selected_Année:
         filtres.append({
             "$and": [
@@ -60,7 +59,6 @@ def query_pinecone(question: str,
         })
         total_annees += 1
 
-    # 4. Décennie Dépenses
     if selected_decade_depenses:
         filtres.append({
             "$and": [
@@ -70,7 +68,6 @@ def query_pinecone(question: str,
         })
         total_annees += 1
 
-    # 5. Décennie Recettes
     if selected_decade_recettes:
         filtres.append({
             "$and": [
@@ -86,7 +83,7 @@ def query_pinecone(question: str,
         {"$or": filtres} 
     ]
 }
-    # Étape 1 – Requête vers les données WBData (valeur)
+    # Requête vers les données WBData 
     wbdata_results = index.query(
         vector=question_embedding,
         top_k=top_k,
@@ -94,7 +91,7 @@ def query_pinecone(question: str,
         include_values=False,
         filter=pinecone_filter
     )
-    # Étape 2 – Requête vers les documents PDF (contexte explicatif)
+    # Requête vers les documents PDF 
     pdf_results = index.query(
         vector=question_embedding,
         top_k=top_k,
